@@ -1,0 +1,133 @@
+###
+POST http://localhost:9000/api/createQuiz HTTP/1.1
+Content-Type: application/json
+
+{
+    "questionsGame": [{
+        "questionNumber": 2,
+        "question": "What is the capital of Spain?",
+        "timeForQuestion": 10
+    }],
+    "answers": [{
+        "answer1": "Madrid",
+        "answer2": "Barcelona",
+        "answer3": "Valencia",
+        "answer4": "Sevilla",
+        "correctAnswer": "Madrid"
+    }],
+    "creatorId": "6424edf28f65a5bd44876c24"
+}
+
+###
+GET http://localhost:9000/api/quiz HTTP/1.1 
+
+###
+GET http://localhost:9000/api/quiz/6424eeeebd382bc46bff7c32 HTTP/1.1
+
+###
+PUT http://localhost:9000/api/quiz/641c88f66f9fcd35a7a39f97 HTTP/1.1
+Content-Type: application/json
+
+{
+    "questionsGame": [{
+        "questionNumber": 2,
+        "question": "What is the capital of Spain?",
+        "timeForQuestion": 10
+    }],
+    "answers": [{
+        "answer1": "Madrid",
+        "answer2": "Barcelona",
+        "answer3": "Valencia",
+        "answer4": "Sevilla",
+        "correctAnswer": "Madrid"
+    }],
+    "playerList": [
+        {
+            "name": "Player1"
+        },
+        {
+            "name": "Player2"
+        }
+    ],
+    "playerResultList": [{}],
+    "hostId": "H3CB21",
+    "isLive": false
+}
+
+###
+DELETE http://localhost:9000/api/quiz/641cb0b5436903dcf2d00b1f HTTP/1.1
+
+###
+POST http://localhost:9000/api/user HTTP/1.1
+Content-Type: application/json
+
+{
+    "username": "Player2",
+    "password": "12321"
+}
+
+###
+POST http://localhost:9000/api/saveGame HTTP/1.1
+Content-Type: application/json
+
+{
+    "owner": "6430f65c8e7a7a041f28f1c2",
+    "quizId": "64377dcfb2cf356dc514385c",
+    "hostId": "B4CS23",
+    "playerList": [],
+    "resultList": [],
+    "isLive": false
+}
+
+###
+PUT http://localhost:9000/api/updateStateGame/64377dcfb2cf356dc5143863 HTTP/1.1
+Content-Type: application/json
+
+{
+    "game": {
+        "_id": "64377dcfb2cf356dc5143863",
+        "owner": "6430f65c8e7a7a041f28f1c2",
+        "quizId": "64377dcfb2cf356dc514385c",
+        "hostId": "2SW30B",
+        "playerList": [],
+        "playerResultList": [],
+        "isLive": false
+    },
+    "state": true
+}
+
+###
+GET http://localhost:9000/api/getGame/2SW30B HTTP/1.1
+
+###
+GET http://localhost:9000/api/getGameById/6437655c8319be799bb04af1 HTTP/1.1
+
+###
+GET http://localhost:9000/api/getGames/6424edf28f65a5bd44876c24 HTTP/1.1
+
+###
+POST http://localhost:9000/api/addPlayer/642502b643ccfb9396e3c4e9 HTTP/1.1
+Content-Type: application/json
+
+{
+    "name": "Player3"
+}
+
+###
+POST http://localhost:9000/api/savePlayerResult HTTP/1.1
+Content-Type: application/json
+
+{
+    "playerName": "Player1",
+    "gameId": "642502b643ccfb9396e3c4e9",
+    "score": 10,
+    "answers": [
+        {
+            "questionNumber": 2,
+            "answered": true,
+            "answers": ["Madrid"],
+            "time": 10,
+            "points": 10
+        }
+    ]
+}
