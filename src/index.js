@@ -82,9 +82,9 @@ io.on('connection', (socket) => {
         socket.to(game.hostId).emit("host-start-preview")
     })
 
-    socket.on("start-question-timer", (time, question) => {
+    socket.on("start-question-timer", (time, question, questionGameLength) => {
         console.log("Send question " + question + " data to players")
-        socket.to(game.hostId).emit("host-start-question-timer", time, question)
+        socket.to(game.hostId).emit("host-start-question-timer", time, question, questionGameLength)
     }) 
     
     socket.on("send-answer-to-host", (score) => {
