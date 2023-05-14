@@ -2,12 +2,22 @@ const quizSchema = require("../models/quiz");
 
 const controller = {
     save: (req, res) => {
-        const quiz = quizSchema(req.body)
+        try {
+          const quiz = new gameSchema(req.body)
+          console.log(quiz)
+          quiz.save()
 
-        quiz
-        .save()
-        .then(data => res.json(data))
-        .catch(err => res.json({ message: err }))
+          res.status(201).json({
+            ok: true,
+            quiz
+          })
+        } catch (error) {
+          console.log(error)
+            res.status(500).json({
+                ok: false,
+                msg: "Por favor hable con el administrador"
+            })
+        }
     },
 
     edit: (req, res) => {
@@ -20,20 +30,60 @@ const controller = {
         .catch(err => res.json({ message: err }))
     },
 
-    delete: (req, res) => {
+    delete: async(req, res) => {
         const id = req.params.id;
 
-        quizSchema
-        .deleteOne({_id: id})
-        .then(data => res.json(data))
-        .catch(err => res.json({ message: err }))
+        try {    
+            let quiz = await quizSchema.findById({ _id: id })
+
+            if(!quiz) {
+                return res.status(404).json({ 
+                    ok: false,
+                    msg: 'No existe un quiz con ese id'
+                })
+            }
+
+            await quizSchema.findByIdAndDelete({ _id: id })
+
+            return res.json({
+                ok: true,
+                msg: 'Quiz eliminado'
+            })
+    
+        } catch(error) {
+            console.log(error)
+            return res.status(500).json({
+                ok: false,
+                msg: 'Hable con el administrador'
+            })
+        }
     },
 
     get: (req, res) => {
-        quizSchema
-        .find()
-        .then(data => res.json(data))
-        .catch(err => res.json({ message: err }))
+        const id = req.params.id;
+
+        try {
+           
+            if (!mongoose.Types.ObjectId.isValid(id)) {
+                return res.status(404).send(`No game with id: ${id}`)
+            }
+            const quiz = quizSchema.findById({ _id: id })
+
+            if(!quiz) {
+                return res.status(404).json({ 
+                    ok: false,
+                    msg: 'No existe un quiz con ese id'
+                })
+            }
+
+            return res.json({
+                ok: true,
+                quiz
+            })
+
+        } catch (error) {
+            
+        }
     },
 
     getOne: async(req, res) => {
