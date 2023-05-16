@@ -1,9 +1,11 @@
+const { encrypt, compare } = require("../helpers/handleBcrypt");
 const userSchema = require("../models/user");
 
 const userController = {
     save: async(req, res) => {
 
-        const { email } = req.body;
+        const { email, password, username } = req.body;
+        const passwordHash = await encrypt(password)
 
         try {
             let user = await userSchema.findOne({ email })
@@ -15,7 +17,11 @@ const userController = {
                 })
             }
 
-            user = new userSchema(req.body)
+            user = new userSchema({
+                email,
+                username,
+                password: passwordHash,
+            })
 
             user.save()
 
@@ -36,12 +42,21 @@ const userController = {
         const { username, password  } = req.body;
 
         try {
-            let user = await userSchema.findOne({ username, password })
+            let user = await userSchema.findOne({ username })
 
             if(!user){
                 return res.status(400).json({
                     ok: false,
-                    msg: "Sus credenciales no son correctas, por favor verifique"
+                    msg: "No se ha encontrado ninguna coincidencia con el nombre de usuario ingresado"
+                })
+            }
+
+            const checkPassword = await compare(password, user.password)
+
+            if(!checkPassword){
+                return res.status(400).json({
+                    ok: false,
+                    msg: "La contraseña ingresada es incorrecta"
                 })
             }
 
