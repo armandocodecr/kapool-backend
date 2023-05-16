@@ -3,8 +3,7 @@ const quizSchema = require("../models/quiz");
 const controller = {
     save: (req, res) => {
         try {
-          const quiz = new gameSchema(req.body)
-          console.log(quiz)
+          const quiz = new quizSchema(req.body)
           quiz.save()
 
           res.status(201).json({
