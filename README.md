@@ -30,4 +30,7 @@ Antes de comenzar, asegúrate de tener instalados los siguientes requisitos:
 ```shell
 git clone [https://github.com/Armandocm19/kapool-backend.git](https://github.com/Armandocm19/kapool-backend)
 ```
-2. Ejecuta el comando 'npm start'
+2. Ejecuta el comando 
+```shell
+npm start
+```
