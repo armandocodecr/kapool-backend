@@ -6,6 +6,8 @@ const useRoutes = require('./routes/games');
 const socketIO = require('socket.io');
 const http = require('http')
 const morgan = require('morgan');
+const multer = require('multer');
+const cloudinary = require('cloudinary').v2
 
 const app = express();
 const port = process.env.PORT ||  9000;
@@ -21,6 +23,31 @@ app.use(cors());
 app.use(morgan('dev'));
 app.use(express.json());
 app.use('/api', useRoutes);
+
+//Cloudinary
+const storage = multer.memoryStorage()
+const upload = multer({ storage: storage });
+
+cloudinary.config({ 
+    cloud_name: 'dyuj1zglt', 
+    api_key: process.env.cloudinary_api_key, 
+    api_secret: process.env.cloudinary_api_secret
+});
+
+app.post('/api/uploadImage', upload.single('file'), async(req, res) => {
+    let file = req.file
+    const bytes = file.buffer.toString('base64')
+    const resCloudinary = await cloudinary.uploader.upload(`data:image/png;base64,${bytes}`, { folder: 'kapool' })
+    
+    if (resCloudinary) {
+        const publicId = resCloudinary.public_id;
+        const pictureUrl = resCloudinary.secure_url;
+  
+        res.status(200).send({ ok: true, key: publicId, url: pictureUrl });
+    } else {
+        res.status(500).send({ ok: false, msg: 'Hubo un problema al cargar la imagen' });
+    }
+})
 
 //Socket connection
 
