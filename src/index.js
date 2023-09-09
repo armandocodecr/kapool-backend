@@ -49,6 +49,20 @@ app.post('/api/uploadImage', upload.single('file'), async(req, res) => {
     }
 })
 
+app.post('/api/removeImage', async(req, res) => {
+    try {   
+        const key = req.body.key
+        const deleteResponse = await cloudinary.uploader.destroy(key);        
+        if (deleteResponse.result === 'ok') {
+            res.status(200).send({ ok: true });
+        } else {
+            res.status(404).send({ ok: false });
+        }
+    } catch (error) {
+        console.log(error)
+    }
+})
+
 //Socket connection
 
 let game;
