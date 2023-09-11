@@ -4,7 +4,8 @@ const quizSchema = new mongoose.Schema({
     questionsGame: [{
         questionNumber: { type: Number, required: true, default: 0 },
         question: { type: String, required: true },
-        timeForQuestion: { type: Number, required: true, default: 0 }
+        timeForQuestion: { type: Number, required: true, default: 0 },
+        image: { type: Object, required: false },
       }],
       answers: [{
         answer1: { type: String, required: true },
