@@ -36,6 +36,9 @@ router.get('/getGame/:id', gamesController.getOne)
 // get game by id
 router.get('/getGameById/:id', gamesController.getGameById)
 
+// remove game by id
+router.get('/removeGame/:id', gamesController.removeGame)
+
 //update state game
 router.put('/updateStateGame/:hostId', gamesController.updateStateGame)
 

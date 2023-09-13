@@ -49,7 +49,7 @@ const gamesController = {
           })
         }
 
-        return res.json({
+        return res.status(200).json({
           ok: true,
           games
         })
@@ -77,7 +77,7 @@ const gamesController = {
               })
           }
 
-          return res.json({
+          return res.status(200).json({
               ok: true,
               game
           })
@@ -105,7 +105,7 @@ const gamesController = {
               })
           }
 
-          return res.json({
+          return res.status(200).json({
               ok: true,
               game
           })
@@ -171,7 +171,36 @@ const gamesController = {
             msg: 'Hable con el administrador'
         });
         }
-      }
+      },
+
+      removeGame: async(req, res) => {
+        const id = req.params.id;
+
+        try {    
+            let game = await gameSchema.findById({ _id: id })
+
+            if(!game) {
+                return res.status(404).json({ 
+                    ok: false,
+                    msg: 'No existe un juego con ese id'
+                })
+            }
+
+            await gameSchema.findByIdAndDelete({ _id: id })
+
+            return res.status(200).json({
+                ok: true,
+                msg: 'Juego eliminado'
+            })
+    
+        } catch(error) {
+            console.log(error)
+            return res.status(500).json({
+                ok: false,
+                msg: 'Hable con el administrador'
+            })
+        }
+    },
 }
 
 module.exports = gamesController;
